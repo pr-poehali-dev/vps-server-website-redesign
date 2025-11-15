@@ -132,31 +132,52 @@ export default function Index() {
     });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-secondary/20 via-transparent to-transparent pointer-events-none"></div>
+      
+      <div className="container mx-auto px-4 py-12 max-w-7xl relative z-10">
         
-        <header className="text-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center gap-2 mb-4 text-primary">
-            <Icon name="Server" size={32} />
-            <span className="text-sm font-semibold tracking-wide uppercase">VPS Агрегатор</span>
+        <header className="text-center mb-20 animate-fade-in">
+          <div className="inline-flex items-center gap-2 mb-6 text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/30 backdrop-blur-sm">
+            <Icon name="Server" size={24} />
+            <span className="text-sm font-semibold tracking-wider uppercase">VPS Агрегатор</span>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-slide-up leading-tight">
             Найдите идеальный VPS
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Сравните провайдеров, тарифы и отзывы в одном месте. Выберите лучший VPS для ваших задач.
           </p>
+          
+          <div className="mt-8 flex items-center justify-center gap-8 text-sm">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+              <span>6+ провайдеров</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <span>5000+ отзывов</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <span>Актуально 24/7</span>
+            </div>
+          </div>
         </header>
 
         <div className="grid lg:grid-cols-4 gap-6 mb-8">
-          <Card className="lg:col-span-1 animate-slide-up">
-            <CardHeader>
+          <Card className="lg:col-span-1 animate-slide-up bg-card/50 backdrop-blur-xl border-2 border-border/50 shadow-2xl shadow-primary/5">
+            <CardHeader className="border-b border-border/50">
               <CardTitle className="flex items-center gap-2">
-                <Icon name="SlidersHorizontal" size={20} />
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <Icon name="SlidersHorizontal" size={18} className="text-primary" />
+                </div>
                 Фильтры
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 mt-6">
               <div>
                 <label className="text-sm font-medium mb-3 block">Цена, ₽/месяц</label>
                 <Slider
@@ -209,22 +230,26 @@ export default function Index() {
             </CardContent>
           </Card>
 
-          <div className="lg:col-span-3 space-y-4">
+          <div className="lg:col-span-3 space-y-6">
             {filteredProviders.map((provider, index) => (
               <Card 
                 key={provider.id} 
-                className="hover:shadow-lg transition-all duration-300 hover:scale-[1.01] border-2 hover:border-primary/50 animate-fade-in"
+                className="group relative overflow-hidden bg-card/50 backdrop-blur-xl border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20 animate-fade-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="relative z-10">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="text-5xl">{provider.logo}</div>
+                      <div className="text-6xl p-4 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl border border-primary/20 group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                        {provider.logo}
+                      </div>
                       <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <CardTitle className="text-2xl">{provider.name}</CardTitle>
+                        <div className="flex items-center gap-3 mb-2">
+                          <CardTitle className="text-2xl font-bold">{provider.name}</CardTitle>
                           {provider.popular && (
-                            <Badge variant="default" className="bg-gradient-to-r from-primary to-secondary">
+                            <Badge variant="default" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg shadow-primary/30 animate-pulse">
+                              <Icon name="TrendingUp" size={12} className="mr-1" />
                               Популярный
                             </Badge>
                           )}
@@ -243,57 +268,68 @@ export default function Index() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-bold text-primary">{provider.price} ₽</div>
-                      <div className="text-sm text-muted-foreground">в месяц</div>
+                      <div className="px-6 py-3 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 backdrop-blur-sm">
+                        <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{provider.price} ₽</div>
+                        <div className="text-xs text-muted-foreground font-medium">в месяц</div>
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-4 gap-4 mb-4">
-                    <div className="flex items-center gap-2">
-                      <Icon name="Cpu" size={18} className="text-primary" />
+                <CardContent className="relative z-10">
+                  <div className="grid md:grid-cols-4 gap-4 mb-6">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors">
+                      <div className="p-2 rounded-lg bg-primary/20">
+                        <Icon name="Cpu" size={18} className="text-primary" />
+                      </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">Процессор</div>
-                        <div className="font-medium">{provider.cpu}</div>
+                        <div className="text-xs text-muted-foreground font-medium">Процессор</div>
+                        <div className="font-semibold text-foreground">{provider.cpu}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Icon name="MemoryStick" size={18} className="text-secondary" />
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/5 border border-secondary/20 hover:bg-secondary/10 transition-colors">
+                      <div className="p-2 rounded-lg bg-secondary/20">
+                        <Icon name="MemoryStick" size={18} className="text-secondary" />
+                      </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">Память</div>
-                        <div className="font-medium">{provider.ram}</div>
+                        <div className="text-xs text-muted-foreground font-medium">Память</div>
+                        <div className="font-semibold text-foreground">{provider.ram}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Icon name="HardDrive" size={18} className="text-accent" />
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-accent/5 border border-accent/20 hover:bg-accent/10 transition-colors">
+                      <div className="p-2 rounded-lg bg-accent/20">
+                        <Icon name="HardDrive" size={18} className="text-accent" />
+                      </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">Диск</div>
-                        <div className="font-medium">{provider.storage}</div>
+                        <div className="text-xs text-muted-foreground font-medium">Диск</div>
+                        <div className="font-semibold text-foreground">{provider.storage}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Icon name="MapPin" size={18} className="text-primary" />
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-primary/5 border border-primary/20 hover:bg-primary/10 transition-colors">
+                      <div className="p-2 rounded-lg bg-primary/20">
+                        <Icon name="MapPin" size={18} className="text-primary" />
+                      </div>
                       <div>
-                        <div className="text-xs text-muted-foreground">Локация</div>
-                        <div className="font-medium">{provider.location}</div>
+                        <div className="text-xs text-muted-foreground font-medium">Локация</div>
+                        <div className="font-semibold text-foreground">{provider.location}</div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-6">
                     {provider.features.map((feature, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
+                      <Badge key={idx} className="bg-muted/80 text-foreground border border-border/50 backdrop-blur-sm hover:bg-muted transition-colors px-3 py-1">
+                        <Icon name="Check" size={12} className="mr-1 text-primary" />
                         {feature}
                       </Badge>
                     ))}
                   </div>
 
-                  <div className="flex gap-2">
-                    <Button className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90">
+                  <div className="flex gap-3">
+                    <Button className="flex-1 bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105 font-semibold">
                       <Icon name="ExternalLink" size={16} className="mr-2" />
                       Подробнее
                     </Button>
-                    <Button variant="outline" className="flex-1">
+                    <Button variant="outline" className="flex-1 border-2 hover:bg-primary/10 hover:border-primary transition-all duration-300">
                       <Icon name="GitCompare" size={16} className="mr-2" />
                       Сравнить
                     </Button>
@@ -304,20 +340,28 @@ export default function Index() {
           </div>
         </div>
 
-        <Tabs defaultValue="comparison" className="mt-12 animate-fade-in">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-            <TabsTrigger value="comparison">Сравнение</TabsTrigger>
-            <TabsTrigger value="guide">Помощь в выборе</TabsTrigger>
+        <Tabs defaultValue="comparison" className="mt-16 animate-fade-in">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-card/50 backdrop-blur-xl border-2 border-border/50 p-1 h-12">
+            <TabsTrigger value="comparison" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-primary-foreground font-semibold">
+              Сравнение
+            </TabsTrigger>
+            <TabsTrigger value="guide" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-secondary data-[state=active]:text-primary-foreground font-semibold">
+              Помощь в выборе
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="comparison" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="BarChart3" size={24} />
-                  Сравнительная таблица
-                </CardTitle>
-                <CardDescription>Детальное сравнение характеристик провайдеров</CardDescription>
+          <TabsContent value="comparison" className="mt-8">
+            <Card className="bg-card/50 backdrop-blur-xl border-2 border-border/50 shadow-2xl shadow-primary/5">
+              <CardHeader className="border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20">
+                    <Icon name="BarChart3" size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-2xl">Сравнительная таблица</CardTitle>
+                    <CardDescription>Детальное сравнение характеристик провайдеров</CardDescription>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
@@ -362,15 +406,15 @@ export default function Index() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="guide" className="mt-6">
-            <div className="grid md:grid-cols-3 gap-4">
-              <Card className="hover:shadow-lg transition-shadow">
+          <TabsContent value="guide" className="mt-8">
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="group bg-card/50 backdrop-blur-xl border-2 border-border/50 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:scale-105">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                    <Icon name="Zap" size={24} className="text-primary" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500 border border-primary/30">
+                    <Icon name="Zap" size={28} className="text-primary" />
                   </div>
-                  <CardTitle>Для малых проектов</CardTitle>
-                  <CardDescription>Сайты, блоги, лендинги</CardDescription>
+                  <CardTitle className="text-xl">Для малых проектов</CardTitle>
+                  <CardDescription className="text-base">Сайты, блоги, лендинги</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
@@ -394,13 +438,17 @@ export default function Index() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow border-primary">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-2">
-                    <Icon name="Rocket" size={24} className="text-secondary" />
+              <Card className="group bg-card/50 backdrop-blur-xl border-2 border-primary hover:border-primary hover:shadow-2xl hover:shadow-primary/30 transition-all duration-500 hover:scale-105 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 opacity-50"></div>
+                <CardHeader className="relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500 border border-secondary/30 shadow-lg shadow-secondary/20">
+                    <Icon name="Rocket" size={28} className="text-secondary" />
                   </div>
-                  <CardTitle>Для бизнеса</CardTitle>
-                  <CardDescription>Интернет-магазины, SaaS</CardDescription>
+                  <div className="flex items-center gap-2 mb-1">
+                    <CardTitle className="text-xl">Для бизнеса</CardTitle>
+                    <Badge className="bg-gradient-to-r from-primary to-secondary text-primary-foreground">Рекомендуем</Badge>
+                  </div>
+                  <CardDescription className="text-base">Интернет-магазины, SaaS</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
@@ -424,13 +472,13 @@ export default function Index() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="group bg-card/50 backdrop-blur-xl border-2 border-border/50 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:scale-105">
                 <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2">
-                    <Icon name="Flame" size={24} className="text-accent" />
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500 border border-accent/30">
+                    <Icon name="Flame" size={28} className="text-accent" />
                   </div>
-                  <CardTitle>Высокие нагрузки</CardTitle>
-                  <CardDescription>Highload, ML, большие базы</CardDescription>
+                  <CardTitle className="text-xl">Высокие нагрузки</CardTitle>
+                  <CardDescription className="text-base">Highload, ML, большие базы</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
@@ -457,8 +505,21 @@ export default function Index() {
           </TabsContent>
         </Tabs>
 
-        <footer className="mt-16 text-center text-sm text-muted-foreground border-t pt-8">
-          <p>© 2024 VPS Агрегатор. Сравните и выберите лучший VPS для ваших задач.</p>
+        <footer className="mt-20 text-center border-t border-border/50 pt-12 pb-8">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30">
+              <Icon name="Server" size={20} className="text-primary" />
+            </div>
+            <span className="text-lg font-semibold">VPS Агрегатор</span>
+          </div>
+          <p className="text-sm text-muted-foreground">© 2024 VPS Агрегатор. Сравните и выберите лучший VPS для ваших задач.</p>
+          <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground">
+            <a href="#" className="hover:text-primary transition-colors">О платформе</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">Контакты</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">API</a>
+          </div>
         </footer>
       </div>
     </div>
